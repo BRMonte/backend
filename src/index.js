@@ -24,24 +24,17 @@ app.get('/projects', (request, response) => { //o que vem após a / chama-se rec
 
   // console.log(query);
 
-  return response.json([
-    'prjeto 1',
-    'proojeto 2',
-  ]);
+  return response.json(projects);
 });
 
 app.post('/projects', (request, response) => {
-  const {title, owner} = request.body;
+  const { title, owner } = request.body;
 
-  const project = {id: uuid(), title, owner};
+  const project = { id: uuid(), title, owner };
 
   projects.push(project); //add o projeto ao DB
 
-  return response.json([
-    'Projeto 1',
-    'Projeto 2',
-    'Projeto 3',
-  ]);
+  return response.json(project); //exibe o projeto criado no formato json
 });
 
 app.put('/projects/:id', (request, response) => { //p deletar ou atualizar preciso passar o ID
