@@ -1,4 +1,6 @@
 const { request, response } = require('express');
+const { uuid } = require('uuidv4'); //biblioteca importada para criar ID's (univers. uniq id)
+
 const express = require('express');
 
 const app = express();
@@ -15,10 +17,12 @@ app.use(express.json()); //essa linha permite que o express leia JSONS ao requis
 // Route params: usado p identificar resources na hora de atualizar ou deletar
 // Request body: conteudo na hora de criar ou atualizar/editar um resourcer no backend
 
-app.get('/projects', (request, response) => { //o que vem após a / chama-se recurso/resource
-  const query = request.query;
+const projects = []; //exerce papel de um DB simples neste inicio de curso
 
-  console.log(query);
+app.get('/projects', (request, response) => { //o que vem após a / chama-se recurso/resource
+  // const query = request.query;
+
+  // console.log(query);
 
   return response.json([
     'prjeto 1',
@@ -27,9 +31,11 @@ app.get('/projects', (request, response) => { //o que vem após a / chama-se rec
 });
 
 app.post('/projects', (request, response) => {
-  const body = request.body;
+  const {title, owner} = request.body;
 
-  console.log(body);
+  const project = {id: uuid(), title, owner};
+
+  projects.push(project); //add o projeto ao DB
 
   return response.json([
     'Projeto 1',
