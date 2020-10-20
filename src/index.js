@@ -11,7 +11,7 @@ const app = express();
 // tipos de parametros
 // Query params: usado principalmente para filtros e paginaçao
 // Route params: usado p identificar resources na hora de atualizar ou deletar
-// Request body:
+// Request body: conteudo na hora de criar ou atualizar/editar um resourcer no backend
 
 app.get('/projects', (request, response) => { //o que vem após a / chama-se recurso/resource
   const query = request.query;
@@ -25,6 +25,10 @@ app.get('/projects', (request, response) => { //o que vem após a / chama-se rec
 });
 
 app.post('/projects', (request, response) => {
+  const body = request.body;
+
+  console.log(body);
+
   return response.json([
     'Projeto 1',
     'Projeto 2',
