@@ -3,6 +3,8 @@ const express = require('express');
 
 const app = express();
 
+app.use(express.json()); //essa linha permite que o express leia JSONS ao requisitarmos o body params no metodo post
+
 //metodos HTTP
 //GET: le/busca infos do backend
 //POST: cria infos no backend
