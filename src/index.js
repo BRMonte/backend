@@ -1,7 +1,7 @@
 //fluxo do Node e linear. roda linha a linha de cima pra baixo
 
 const { request, response } = require('express');
-const { uuid } = require('uuidv4'); //biblioteca importada para criar ID's (univers. uniq id)
+const { uuid, isUuid } = require('uuidv4'); //biblioteca importada para criar ID's (univers. uniq id)
 
 const express = require('express'); //
 
@@ -38,7 +38,16 @@ function logRequests(request, response, next) {
   console.log(logLabel);
 
   return next(); //chama o proximo middleware, assim nao interrompe a proxima requisição, que seria a GET (pq linearmente está abaixo)
-};
+}
+
+function validateProjectId(request, response, next) {
+  const { id } = request.params;
+
+  if (!isUuid(id)) {
+    return response.status(400).json({ error: 'Invalid project ID' });
+  }
+
+}
 
 app.use(logRequests); // sem o next acima, tudo que viesse depois desta linha n seria executado
 //------------------------------//
@@ -82,7 +91,7 @@ app.put('/projects/:id', (request, response) => { //p deletar ou atualizar preci
   return response.json(project);
 });
 
-app.delete('/projects/:id', (request, response) => {
+app.delete('/projects/:id', validateProjectId, (request, response) => {
   const { id } = request.params;
 
   const projectIndex = projects.findIndex(project => project.id === id); //essa linha faz a busca para atualizar
