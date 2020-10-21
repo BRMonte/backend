@@ -1,7 +1,9 @@
+//fluxo do Node e linear. roda linha a linha de cima pra baixo
+
 const { request, response } = require('express');
 const { uuid } = require('uuidv4'); //biblioteca importada para criar ID's (univers. uniq id)
 
-const express = require('express');
+const express = require('express'); //
 
 const app = express();
 
@@ -17,7 +19,29 @@ app.use(express.json()); //essa linha permite que o express leia JSONS ao requis
 // Route params: usado p identificar resources na hora de atualizar ou deletar
 // Request body: conteudo na hora de criar ou atualizar/editar um resourcer no backend
 
+//MIDDLEWARE
+// é um interceptador de requisições
+// pode interromper ou altear dados da requisição
+// formato do middleware: é sempre uma função que recebe sempre 2 parametros (request e response), as vezes 3 (request, response, next)
+// pode-se dizer que as rotas sejam middlewares
+// usa-se qnd queremos que um trecho de codigo seja disparado de forma automatica numa rota do app
+
 const projects = []; //exerce papel de um DB simples neste inicio de curso
+
+// INTERCEPTADOR DE REQUISIÇÕES = middleware //
+
+function logRequests(request, response, next) {
+  const { method, url } = request;
+
+  const logLabel = `[${method.toUpperCase()}] ${url}`;
+
+  console.log(logLabel);
+
+  return next(); //chama o proximo middleware, assim nao interrompe a proxima requisição, que seria a GET (pq linearmente está abaixo)
+};
+
+app.use(logRequests); // sem o next acima, tudo que viesse depois desta linha n seria executado
+//------------------------------//
 
 app.get('/projects', (request, response) => { //o que vem após a / chama-se recurso/resource
   // const query = request.query;
