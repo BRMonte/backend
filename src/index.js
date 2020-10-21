@@ -39,25 +39,37 @@ app.post('/projects', (request, response) => {
 
 app.put('/projects/:id', (request, response) => { //p deletar ou atualizar preciso passar o ID
   const { id } = request.params;
+  const { title, owner } = request.body;
 
   const projectIndex = projects.findIndex(project => project.id === id); //essa linha faz a busca para atualizar
 
   if (projectIndex < 0) { //esse bloco faz a verificação. Se o projeto n existir, projectIndex vai retornar 0 ou -1. Então damos feedback
-    return response.json({ error: 'Project not found' })
+    return response.status(400).json({ error: 'Project not found' })
   };
 
-  return response.json([
-    'Projeto 4',
-    'Projeto 5',
-    'Projeto 3',
-  ]);
+  const project = {
+    id,
+    title,
+    owner,
+  };
+
+  projects[projectIndex] = project;
+
+  return response.json(project);
 });
 
 app.delete('/projects/:id', (request, response) => {
-  return response.json([
-    'Projeto 2',
-    'Projeto 3',
-  ]);
+  const { id } = request.params;
+
+  const projectIndex = projects.findIndex(project => project.id === id); //essa linha faz a busca para atualizar
+
+  if (projectIndex < 0) { //esse bloco faz a verificação. Se o projeto n existir, projectIndex vai retornar 0 ou -1. Então damos feedback
+    return response.status(400).json({ error: 'Project not found' })
+  };
+
+  projects.splice(projectIndex, 1); //remove o item selecionado
+
+  return response.status(204).send(); //retorna em branco apos deletar
 });
 
 app.listen(3333, () => {
