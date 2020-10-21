@@ -38,9 +38,13 @@ app.post('/projects', (request, response) => {
 });
 
 app.put('/projects/:id', (request, response) => { //p deletar ou atualizar preciso passar o ID
-  const params = request.params;
+  const { id } = request.params;
 
-  console.log(params);
+  const projectIndex = projects.findIndex(project => project.id === id); //essa linha faz a busca para atualizar
+
+  if (projectIndex < 0) { //esse bloco faz a verificação. Se o projeto n existir, projectIndex vai retornar 0 ou -1. Então damos feedback
+    return response.json({ error: 'Project not found' })
+  };
 
   return response.json([
     'Projeto 4',
