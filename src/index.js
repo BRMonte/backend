@@ -43,7 +43,7 @@ function logRequests(request, response, next) {
 function validateProjectId(request, response, next) {
   const { id } = request.params;
 
-  if (!isUuid(id)) {
+  if (!isUuid(id)) { //isUuid e um metodo da biblioteca. Se o ID n for valido, vai entrar nessa funcao abaixo. Ou seja, e um middleware p validar o ID
     return response.status(400).json({ error: 'Invalid project ID' });
   }
 
